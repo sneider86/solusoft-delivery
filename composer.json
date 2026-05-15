@@ -1,0 +1,20 @@
+{
+    "name": "solusoft/module-solusoft-delivery",
+    "description": "Solusoft Delivery",
+    "require": {
+        "php": ">=8.4"
+    },
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Solusoft\\Delivery\\": ""
+        }
+    }
+}
