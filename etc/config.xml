@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+
+    <default>
+        <carriers>
+            <solusoftshipping>
+                <active>1</active>
+                <model>Solusoft\Delivery\Model\Carrier\ShippingMethod</model>
+                <title>Shipping Method</title>
+                <name>Entrega personalizada</name>
+                <price>15000</price>
+            </solusoftshipping>
+        </carriers>
+    </default>
+
+</config>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="solusoft_region_city" resource="default" engine="innodb"
+            comment="Solusoft Region City">
+
+        <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="Entity Id"/>
+        <column xsi:type="varchar" name="code_country_region" length="25" nullable="false" />
+        <column xsi:type="smallint" name="city_id" nullable="false" />
+        <column xsi:type="varchar" name="city_label" length="25" nullable="false" />
+        <column xsi:type="decimal" name="wight" nullable="false" />
+        <column xsi:type="int" name="price" nullable="false" />
+        <column xsi:type="varchar" length="2" name="status" nullable="false" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+
+        <index referenceId="solusoft_region_city" indexType="btree">
+            <column name="code_country_region"/>
+            <column name="status"/>
+        </index>
+
+    </table>
+    
+</schema>
