@@ -1,0 +1,14 @@
+{
+    "solusoft_home_banner": {
+        "column": {
+            "entity_id": true,
+            "src": true,
+            "alt": true,
+            "sord": true,
+            "status": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

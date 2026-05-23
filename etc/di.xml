@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+        <type name="Solusoft\Delivery\Logger\Logger">
+            <arguments>
+                <argument name="name" xsi:type="string">SolusoftDelivery</argument>
+                <argument name="handlers"  xsi:type="array">
+                    <item name="system" xsi:type="object">Solusoft\Delivery\Logger\Handler</item>
+                </argument>
+            </arguments>
+        </type>
+
+        <type name="Magento\Checkout\Block\Checkout\LayoutProcessor">
+            <plugin name="solusoft_pricing" type="Solusoft\Delivery\Pluging\Checkout\PlugingLayoutProcessor" sortOrder="10" />
+        </type>
+
+        <preference for="Solusoft\Delivery\Api\RegionRepositoryInterface"
+            type="Solusoft\Delivery\Model\RegionRepository"/> 
+
+        <preference for="Solusoft\Delivery\Api\Data\RegionInterface"
+            type="Solusoft\Delivery\Model\Region"/>
+
+        <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+            <arguments>
+                <argument name="collections" xsi:type="array">
+                    <item name="region_listing_data_source" xsi:type="string">RegionCollection</item>
+                </argument>
+            </arguments>
+        </type>
+        <virtualType name="HomeSliderCollection" type="Solusoft\Delivery\Ui\DataProvider\Region\Listing\Collection">
+            <arguments>
+                <argument name="mainTable" xsi:type="string">solusoft_region_city</argument>
+                <argument name="resourceModel" xsi:type="string">Solusoft\Delivery\Model\ResourceModel\Region</argument>
+            </arguments>
+        </virtualType>
+
+</config>
