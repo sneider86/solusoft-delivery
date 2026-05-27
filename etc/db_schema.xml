@@ -5,7 +5,7 @@
 
         <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="Entity Id"/>
         <column xsi:type="varchar" name="code_country_region" length="25" nullable="false" />
-        <column xsi:type="smallint" name="city_id" nullable="false" />
+        <column xsi:type="varchar" name="city_id" length="10" nullable="false" />
         <column xsi:type="varchar" name="city_label" length="25" nullable="false" />
         <column xsi:type="decimal" name="wight" nullable="false" />
         <column xsi:type="int" name="price" nullable="false" />
