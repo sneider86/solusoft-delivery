@@ -28,19 +28,11 @@ class PlugingLayoutProcessor
         $obj = $jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']['children']['shippingAddress']['children']['shipping-address-fieldset']['children'];
         $this->customLog->debug(json_encode($obj));
         $fieldCode = 'state';
-        $fieldLabel = __("Departamento");
+        $fieldLabel = __("City");
         $options = [
             [
-                'value' => '1',
-                'label' => __('Opción 1')
-            ],
-            [
-                'value' => '2',
-                'label' => __('Opción 2')
-            ],
-            [
-                'value' => '3',
-                'label' => __('Opción 3')
+                'value' => '',
+                'label' => __('Please, chose option')
             ]
         ];
         $department = [
@@ -59,7 +51,7 @@ class PlugingLayoutProcessor
             'validation' => [
                 'required-entry' => true
             ],
-            'sortOrder' => 85,
+            'sortOrder' => 95,
             'id' => $fieldCode
         ];
         $obj[$fieldCode] = $department;

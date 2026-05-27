@@ -9,6 +9,8 @@ use Magento\Shipping\Model\Rate\Result;
 use Magento\Quote\Model\Quote\Address\RateResult\Method;
 use Magento\Shipping\Model\Rate\ResultFactory;
 use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
+use Solusoft\Delivery\Api\RegionRepositoryInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 
 class ShippingMethod extends AbstractCarrier implements CarrierInterface
 {
@@ -21,7 +23,15 @@ class ShippingMethod extends AbstractCarrier implements CarrierInterface
     protected $rateResultFactory;
     protected $rateMethodFactory;
 
-    
+    /**
+     *  @var RegionRepositoryInterface $regionRepositoryInterface
+     */
+    private RegionRepositoryInterface $regionRepositoryInterface;
+
+    /**
+     * @var SearchCriteriaBuilder $searchCriteriaBuilder
+     */
+    private SearchCriteriaBuilder $searchCriteriaBuilder;
 
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
@@ -29,6 +39,8 @@ class ShippingMethod extends AbstractCarrier implements CarrierInterface
         \Psr\Log\LoggerInterface $logger,
         ResultFactory $rateResultFactory,
         MethodFactory $rateMethodFactory,
+        RegionRepositoryInterface $regionRepositoryInterface,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
         array $data = []
     ) {
         parent::__construct(
@@ -40,6 +52,8 @@ class ShippingMethod extends AbstractCarrier implements CarrierInterface
 
         $this->rateResultFactory = $rateResultFactory;
         $this->rateMethodFactory = $rateMethodFactory;
+        $this->regionRepositoryInterface = $regionRepositoryInterface;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
     public function collectRates(RateRequest $request)
@@ -61,6 +75,24 @@ class ShippingMethod extends AbstractCarrier implements CarrierInterface
         $method->setMethodTitle($this->getConfigData('name'));
 
         $amount = (float)$this->getConfigData('price');
+
+        $code = $request->getDestRegionCode();
+        $city = $request->getDestCity();
+
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('code_country_region', $code, 'eq')
+            ->addFilter('city_label', $city, 'eq')
+            ->addFilter('status', 'A', 'eq')
+            ->create();
+
+        $resultSearch = $this->regionRepositoryInterface->getList($searchCriteria);
+        $items = $resultSearch->getItems();
+        if (count($items)==0) {
+            return false;
+        }
+        foreach ($items as $item) {
+            $amount = (float)$item->getPrice();
+        }
 
         $method->setPrice($amount);
         $method->setCost($amount);
