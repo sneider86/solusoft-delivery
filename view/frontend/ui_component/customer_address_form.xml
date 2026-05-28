@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+
+    <fieldset name="general">
+        <field name="state">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">
+                        Magento_Ui/js/form/element/select
+                    </item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">
+                        City
+                    </item>
+                    <item name="dataScope" xsi:type="string">city</item>
+                    <item name="sortOrder" xsi:type="number">115</item>
+                    <item name="options" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="label" xsi:type="string">Barranquilla</item>
+                            <item name="value" xsi:type="string">Barranquilla</item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="label" xsi:type="string">Soledad</item>
+                            <item name="value" xsi:type="string">Soledad</item>
+                        </item>
+                        <item name="2" xsi:type="array">
+                            <item name="label" xsi:type="string">Malambo</item>
+                            <item name="value" xsi:type="string">Malambo</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>
