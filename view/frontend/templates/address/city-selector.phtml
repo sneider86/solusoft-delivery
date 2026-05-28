@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ */
+
+$initConfig = [
+    'cityInputSelector' => '#city',
+    'regionInputSelector' => '#region_id',
+    'countryInputSelector' => '#country',
+    'endpointUrl' => $block->getUrl('delivery/ajax/city'),
+    'placeholderText' => (string) __('Please select a city'),
+    'loadingText' => (string) __('Loading cities...'),
+    'emptyText' => (string) __('No cities available'),
+];
+?>
+<script type="text/x-magento-init">
+{
+    "#form-validate": {
+        "Solusoft_Delivery/js/view/customer-address-city": <?= /* @noEscape */ json_encode($initConfig) ?>
+    }
+}
+</script>

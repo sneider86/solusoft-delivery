@@ -7,6 +7,10 @@ define([
 ], function ($, quote, fullScreenLoader, urlBuilder, registry) {
     'use strict';
 
+    var shippingRegionFieldPath = 'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.region_id',
+        shippingCityFieldPath = 'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.state',
+        shippingAddressFieldPath = 'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.city';
+
     return function (Component) {
 
         return Component.extend({
@@ -15,27 +19,52 @@ define([
                 this._super();
                 var self = this;
 
-                // registry.get(function (component) {
-                //     console.log(component.name);
-                // });
-
-                if (window.regionSubscriberInitialized) {
+                if (this._solusoftDeliveryRegionSubscriberInitialized) {
                     return this;
                 }
 
-                window.regionSubscriberInitialized = true;
-                var address = quote.shippingAddress();
-                if (address && address.regionId) {
-                    self.loadCityList(address.regionId);
-                }
-                
+                this._solusoftDeliveryRegionSubscriberInitialized = true;
+
                 quote.shippingAddress.subscribe(function (address) {
                     if (address && address.regionId) {
                         self.loadCityList(address.regionId);
                     }
                 });
 
+                registry.async(shippingRegionFieldPath)(function (regionField) {
+                    var initialRegionId = regionField.value();
+
+                    if (initialRegionId) {
+                        self.loadCityList(initialRegionId);
+                    }
+
+                    regionField.on('value', function (regionId) {
+                        if (regionId) {
+                            self.loadCityList(regionId);
+                        } else {
+                            self.resetCityField();
+                        }
+                    });
+                });
+
                 return this;
+            },
+
+            resetCityField: function () {
+                var cityCombobox = registry.get(shippingCityFieldPath),
+                    cityField = registry.get(shippingAddressFieldPath);
+
+                if (cityCombobox !== undefined) {
+                    if (typeof cityCombobox.setOptions === 'function') {
+                        cityCombobox.setOptions([]);
+                    } else if (typeof cityCombobox.options === 'function') {
+                        cityCombobox.options([]);
+                    }
+                }
+
+                if (cityField !== undefined) {
+                    cityField.value('');
+                }
             },
 
             loadCityList: function(regionId)
@@ -51,16 +80,18 @@ define([
                     type: 'POST',
                     success: (response) => {
                         if (response) {
-                            var cityCombobox = registry.get(
-                                'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.state'
-                            );
+                            var cityCombobox = registry.get(shippingCityFieldPath);
                             if (cityCombobox!==undefined) {
-                                cityCombobox.options(response.options);
+                                if (typeof cityCombobox.setOptions === 'function') {
+                                    cityCombobox.setOptions(response.options);
+                                } else if (typeof cityCombobox.options === 'function') {
+                                    cityCombobox.options(response.options);
+                                }
                             }
-                            var cityField = registry.get(
-                                'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.city'
-                            );
-                            cityField.value('');
+                            var cityField = registry.get(shippingAddressFieldPath);
+                            if (cityField !== undefined) {
+                                cityField.value('');
+                            }
                         }
                     },
                     error: () => {

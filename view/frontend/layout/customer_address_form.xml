@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="solusoft.delivery.customer.address.city.selector"
+                   template="Solusoft_Delivery::address/city-selector.phtml"
+                   cacheable="false"
+                   after="customer_address_edit"/>
+        </referenceContainer>
+    </body>
+</page>
