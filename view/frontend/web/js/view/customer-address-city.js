@@ -54,6 +54,12 @@ define([
             return $.trim((value || '').toString()).toLowerCase();
         }
 
+        function sanitizeCityValue(value) {
+            return $.trim((value || '').toString())
+                .replace(/[^A-Za-z0-9\s\-\u00C0-\u024F']/g, '')
+                .replace(/\s+/g, ' ');
+        }
+
         function getSelectedCity(options, cityValue) {
             var selectedValue = '';
 
@@ -64,7 +70,7 @@ define([
             $.each(options || [], function (index, option) {
                 var optionValue = option.label || option.value || '';
 
-                if (normalizeValue(optionValue) === normalizeValue(cityValue)) {
+                if (normalizeValue(sanitizeCityValue(optionValue)) === normalizeValue(sanitizeCityValue(cityValue))) {
                     selectedValue = optionValue;
                     return false;
                 }
@@ -76,7 +82,7 @@ define([
         }
 
         function setHiddenCityValue(value) {
-            cityInput.val(value || '');
+            cityInput.val(sanitizeCityValue(value || ''));
         }
 
         function renderPlaceholder(placeholderText, disabled) {

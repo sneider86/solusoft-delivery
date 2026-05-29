@@ -60,15 +60,17 @@ define([
                 return option.value == value;
             });
             if (selected) {
+                var sanitizedCity = this.sanitizeCityValue(selected.label);
+
                 // var cityField = registry.get(
                 //     'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.city'
                 // );
                 // cityField.value(selected.label);
                 var address = quote.shippingAddress();
-                address.city = selected.label
+                address.city = sanitizedCity
 
                 var checkoutProvider = registry.get('checkoutProvider');
-                checkoutProvider.set('shippingAddress.city', selected.label);
+                checkoutProvider.set('shippingAddress.city', sanitizedCity);
                 var shippingAddressData = checkoutProvider.get('shippingAddress');
                 checkoutData.setShippingAddressFromData(shippingAddressData);
 
@@ -77,6 +79,14 @@ define([
             
                 shippingRateProcessor.getRates(address);
             }
+        },
+
+        sanitizeCityValue: function (value) {
+            return (value || '')
+                .toString()
+                .replace(/[^A-Za-z0-9\s\-\u00C0-\u024F']/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
         }
 
     });
